@@ -6,102 +6,83 @@ const PredictionPage = {
   selectedDisease: 'heart',
 
   DISEASES: [
-    { id:'heart',       label:'❤️ Heart Disease',  color:'var(--red)' },
-    { id:'cancer',      label:'🎗️ Breast Cancer',  color:'var(--pink)' },
-    { id:'diabetes',    label:'🩸 Diabetes',        color:'var(--orange)' },
-    { id:'hypertension',label:'💉 Hypertension',    color:'var(--blue)' },
-    { id:'stroke',      label:'🧠 Stroke Risk',     color:'var(--purple)' },
-    { id:'pneumonia',   label:'🫁 Pneumonia',       color:'var(--cyan)' },
+    { id: 'heart', label: '❤️ Heart Disease', color: 'var(--red)' },
+    { id: 'breast', label: '🎗️ Breast Cancer', color: 'var(--pink)' },
+    { id: 'diabetes', label: '🩸 Diabetes', color: 'var(--orange)' },
+    { id: 'kidney', label: '🫘 Kidney Disease', color: 'var(--blue)' },
+    { id: 'liver', label: '🫀 Liver Disease', color: 'var(--purple)' },
   ],
 
   CONFIGS: {
     heart: {
       title: 'Heart Disease Risk Assessment',
       fields: [
-        { id:'age',             label:'Age',                           type:'number', ph:'e.g. 55' },
-        { id:'gender',          label:'Gender',                        type:'select', opts:['Male','Female'] },
-        { id:'chest_pain',      label:'Chest Pain Type',               type:'select', opts:['Typical Angina','Atypical Angina','Non-Anginal Pain','Asymptomatic'] },
-        { id:'bp',              label:'Resting BP (mmHg)',             type:'number', ph:'e.g. 130' },
-        { id:'cholesterol',     label:'Cholesterol (mg/dL)',           type:'number', ph:'e.g. 220' },
-        { id:'blood_sugar',     label:'Fasting Blood Sugar > 120',     type:'select', opts:['No','Yes'] },
-        { id:'max_hr',          label:'Max Heart Rate Achieved',       type:'number', ph:'e.g. 150' },
-        { id:'exercise_angina', label:'Exercise-Induced Angina',       type:'select', opts:['No','Yes'] },
-        { id:'st_depression',   label:'ST Depression',                 type:'number', ph:'e.g. 1.5' },
-        { id:'smoking',         label:'Smoking History',               type:'select', opts:['Never','Former','Current'] },
+        { id: 'age', label: 'Age (years)', type: 'number', ph: 'e.g. 55' },
+        { id: 'gender', label: 'Gender (1=Male, 0=Female)', type: 'select', opts: ['1', '0'] },
+        { id: 'cp', label: 'Chest Pain Type (0-3)', type: 'number', ph: 'e.g. 1' },
+        { id: 'trestbps', label: 'Resting BP (mm Hg)', type: 'number', ph: 'e.g. 130' },
+        { id: 'chol', label: 'Cholesterol (mg/dl)', type: 'number', ph: 'e.g. 220' },
+        { id: 'fbs', label: 'Fasting Blood Sugar > 120 (1=Yes)', type: 'select', opts: ['0', '1'] },
+        { id: 'restecg', label: 'Resting ECG (0-2)', type: 'number', ph: 'e.g. 0' },
+        { id: 'thalach', label: 'Max Heart Rate', type: 'number', ph: 'e.g. 150' },
+        { id: 'exang', label: 'Exercise Angina (1=Yes)', type: 'select', opts: ['0', '1'] },
+        { id: 'oldpeak', label: 'ST Depression', type: 'number', ph: 'e.g. 1.5' },
+        { id: 'slope', label: 'ST Segment Slope (0-2)', type: 'number', ph: 'e.g. 1' },
+        { id: 'ca', label: 'Major Vessels (0-4)', type: 'number', ph: 'e.g. 0' },
+        { id: 'thal', label: 'Thalassemia (0-3)', type: 'number', ph: 'e.g. 3' },
       ]
     },
-    cancer: {
+    breast: {
       title: 'Breast Cancer Risk Assessment',
       fields: [
-        { id:'clump_thickness', label:'Clump Thickness (1-10)', type:'number', ph:'e.g. 5' },
-        { id:'uniformity_cell_size', label:'Uniformity of Cell Size (1-10)', type:'number', ph:'e.g. 3' },
-        { id:'uniformity_cell_shape', label:'Uniformity of Cell Shape (1-10)', type:'number', ph:'e.g. 3' },
-        { id:'marginal_adhesion', label:'Marginal Adhesion (1-10)', type:'number', ph:'e.g. 2' },
-        { id:'single_epithelial_cell_size', label:'Single Epithelial Cell Size (1-10)', type:'number', ph:'e.g. 2' },
-        { id:'bare_nuclei', label:'Bare Nuclei (1-10)', type:'number', ph:'e.g. 1' },
-        { id:'bland_chromatin', label:'Bland Chromatin (1-10)', type:'number', ph:'e.g. 3' },
-        { id:'normal_nucleoli', label:'Normal Nucleoli (1-10)', type:'number', ph:'e.g. 1' },
-        { id:'mitoses', label:'Mitoses (1-10)', type:'number', ph:'e.g. 1' },
+        { id: 'clump_thickness', label: 'Clump Thickness (1-10)', type: 'number', ph: 'e.g. 5' },
+        { id: 'uniformity_cell_size', label: 'Uniformity of Cell Size (1-10)', type: 'number', ph: 'e.g. 3' },
+        { id: 'uniformity_cell_shape', label: 'Uniformity of Cell Shape (1-10)', type: 'number', ph: 'e.g. 3' },
+        { id: 'marginal_adhesion', label: 'Marginal Adhesion (1-10)', type: 'number', ph: 'e.g. 2' },
+        { id: 'single_epithelial_cell_size', label: 'Epithelial Cell Size (1-10)', type: 'number', ph: 'e.g. 2' },
+        { id: 'bare_nuclei', label: 'Bare Nuclei (1-10)', type: 'number', ph: 'e.g. 1' },
+        { id: 'bland_chromatin', label: 'Bland Chromatin (1-10)', type: 'number', ph: 'e.g. 3' },
+        { id: 'normal_nucleoli', label: 'Normal Nucleoli (1-10)', type: 'number', ph: 'e.g. 1' },
+        { id: 'mitoses', label: 'Mitoses (1-10)', type: 'number', ph: 'e.g. 1' },
       ]
     },
     diabetes: {
       title: 'Diabetes Risk Assessment',
       fields: [
-        { id:'age',             label:'Age',                           type:'number', ph:'e.g. 45' },
-        { id:'gender',          label:'Gender',                        type:'select', opts:['Male','Female'] },
-        { id:'glucose',         label:'Fasting Glucose (mg/dL)',       type:'number', ph:'e.g. 110' },
-        { id:'bmi',             label:'BMI',                           type:'number', ph:'e.g. 28' },
-        { id:'bp',              label:'Blood Pressure (mmHg)',         type:'number', ph:'e.g. 120' },
-        { id:'insulin',         label:'2hr Insulin (mu U/ml)',         type:'number', ph:'e.g. 80' },
-        { id:'skin_thickness',  label:'Skin Thickness (mm)',           type:'number', ph:'e.g. 20' },
-        { id:'family_history',  label:'Family History of Diabetes',    type:'select', opts:['No','Yes - Type 2','Yes - Both Parents'] },
-        { id:'physical',        label:'Physical Activity',             type:'select', opts:['Active','Moderately Active','Sedentary'] },
-        { id:'diet',            label:'Diet Quality',                  type:'select', opts:['Healthy','Moderate','Poor - High Sugar/Carbs'] },
+        { id: 'pregnancies', label: 'Pregnancies', type: 'number', ph: 'e.g. 2' },
+        { id: 'glucose', label: 'Glucose (mg/dl)', type: 'number', ph: 'e.g. 110' },
+        { id: 'blood_pressure', label: 'Blood Pressure (mm Hg)', type: 'number', ph: 'e.g. 70' },
+        { id: 'skin_thickness', label: 'Skin Thickness (mm)', type: 'number', ph: 'e.g. 20' },
+        { id: 'insulin', label: 'Insulin Level (mu U/ml)', type: 'number', ph: 'e.g. 80' },
+        { id: 'bmi', label: 'BMI (kg/m²)', type: 'number', ph: 'e.g. 25.0' },
+        { id: 'diabetes_pedigree', label: 'Diabetes Pedigree', type: 'number', ph: 'e.g. 0.5' },
+        { id: 'age', label: 'Age (years)', type: 'number', ph: 'e.g. 45' },
       ]
     },
-    hypertension: {
-      title: 'Hypertension Risk Assessment',
+    kidney: {
+      title: 'Kidney Disease Risk Assessment',
       fields: [
-        { id:'age',      label:'Age',                      type:'number', ph:'e.g. 50' },
-        { id:'gender',   label:'Gender',                   type:'select', opts:['Male','Female'] },
-        { id:'bp_sys',   label:'Systolic BP (mmHg)',       type:'number', ph:'e.g. 135' },
-        { id:'bp_dia',   label:'Diastolic BP (mmHg)',      type:'number', ph:'e.g. 88' },
-        { id:'bmi',      label:'BMI',                      type:'number', ph:'e.g. 30' },
-        { id:'sodium',   label:'Salt Intake',              type:'select', opts:['Low','Moderate','High'] },
-        { id:'smoking',  label:'Smoking',                  type:'select', opts:['Never','Former','Current'] },
-        { id:'alcohol',  label:'Alcohol',                  type:'select', opts:['None','Occasional','Heavy'] },
-        { id:'physical', label:'Physical Activity',        type:'select', opts:['Active','Moderate','Sedentary'] },
-        { id:'stress',   label:'Stress Level',             type:'select', opts:['Low','Moderate','High','Chronic'] },
+        { id: 'age', label: 'Age (years)', type: 'number', ph: 'e.g. 50' },
+        { id: 'blood_pressure_systolic', label: 'Systolic BP (mm Hg)', type: 'number', ph: 'e.g. 130' },
+        { id: 'blood_pressure_diastolic', label: 'Diastolic BP (mm Hg)', type: 'number', ph: 'e.g. 80' },
+        { id: 'glucose', label: 'Glucose (mg/dl)', type: 'number', ph: 'e.g. 100' },
+        { id: 'blood_urea_nitrogen', label: 'BUN (mg/dl)', type: 'number', ph: 'e.g. 20' },
+        { id: 'serum_creatinine', label: 'Creatinine (mg/dl)', type: 'number', ph: 'e.g. 1.2' },
+        { id: 'sodium', label: 'Sodium (mEq/L)', type: 'number', ph: 'e.g. 140' },
+        { id: 'potassium', label: 'Potassium (mEq/L)', type: 'number', ph: 'e.g. 4.5' },
       ]
     },
-    stroke: {
-      title: 'Stroke Risk Assessment',
+    liver: {
+      title: 'Liver Disease Risk Assessment',
       fields: [
-        { id:'age',         label:'Age',                        type:'number', ph:'e.g. 60' },
-        { id:'gender',      label:'Gender',                     type:'select', opts:['Male','Female'] },
-        { id:'hypertension',label:'Hypertension History',       type:'select', opts:['No','Yes - Controlled','Yes - Uncontrolled'] },
-        { id:'heart_dis',   label:'Heart Disease History',      type:'select', opts:['No','Atrial Fibrillation','Coronary Artery Disease','Other'] },
-        { id:'glucose',     label:'Average Glucose (mg/dL)',    type:'number', ph:'e.g. 105' },
-        { id:'bmi',         label:'BMI',                        type:'number', ph:'e.g. 27' },
-        { id:'smoking',     label:'Smoking Status',             type:'select', opts:['Never','Formerly','Currently'] },
-        { id:'carotid',     label:'Carotid Artery Status',      type:'select', opts:['Normal','Mild Stenosis','Significant Stenosis'] },
-        { id:'tia',         label:'Previous TIA / Mini-Stroke', type:'select', opts:['No','Yes'] },
-        { id:'medication',  label:'Blood Thinner Medication',   type:'select', opts:['None','Aspirin','Anticoagulants'] },
-      ]
-    },
-    pneumonia: {
-      title: 'Pneumonia Risk Assessment',
-      fields: [
-        { id:'age',       label:'Age',                          type:'number', ph:'e.g. 35' },
-        { id:'fever',     label:'Fever Temperature (°C)',       type:'number', ph:'e.g. 38.5' },
-        { id:'cough',     label:'Cough Type',                   type:'select', opts:['None','Dry','Productive - Clear','Productive - Colored'] },
-        { id:'breathing', label:'Breathing Difficulty',         type:'select', opts:['None','Mild','Moderate','Severe'] },
-        { id:'chest',     label:'Chest Pain on Breathing',      type:'select', opts:['No','Mild','Severe'] },
-        { id:'oxygen',    label:'Oxygen Saturation (%)',        type:'number', ph:'e.g. 97' },
-        { id:'wbc',       label:'WBC Count (cells/µL)',         type:'number', ph:'e.g. 12000' },
-        { id:'xray',      label:'Chest X-Ray Findings',         type:'select', opts:['Not Done','Normal','Patchy Opacity','Consolidation','Bilateral Infiltrates'] },
-        { id:'immune',    label:'Immune Status',                type:'select', opts:['Normal','Mildly Compromised','Immunocompromised'] },
-        { id:'duration',  label:'Symptom Duration (days)',      type:'number', ph:'e.g. 5' },
+        { id: 'age', label: 'Age (years)', type: 'number', ph: 'e.g. 45' },
+        { id: 'total_bilirubin', label: 'Total Bilirubin (mg/dl)', type: 'number', ph: 'e.g. 0.8' },
+        { id: 'direct_bilirubin', label: 'Direct Bilirubin (mg/dl)', type: 'number', ph: 'e.g. 0.2' },
+        { id: 'alkaline_phosphatase', label: 'Alkaline Phosphatase (IU/L)', type: 'number', ph: 'e.g. 75' },
+        { id: 'alamine_aminotransferase', label: 'ALT/SGPT (IU/L)', type: 'number', ph: 'e.g. 35' },
+        { id: 'aspartate_aminotransferase', label: 'AST/SGOT (IU/L)', type: 'number', ph: 'e.g. 35' },
+        { id: 'total_protiens', label: 'Total Proteins (g/dl)', type: 'number', ph: 'e.g. 6.5' },
+        { id: 'albumin', label: 'Albumin (g/dl)', type: 'number', ph: 'e.g. 3.5' },
       ]
     },
   },
@@ -111,13 +92,19 @@ const PredictionPage = {
     el.innerHTML = `
       <div class="page-hd">
         <div>
-          <h2>AI Disease Prediction</h2>
+          <h2>Clinical Risk Prediction</h2>
           <div class="meta"> Clinical decision support tool</div>
         </div>
       </div>
-      <div style="background:rgba(59,131,247,.06);border:1px solid rgba(59,131,247,.2);border-radius:10px;padding:12px 16px;margin-bottom:18px;font-size:12.5px;color:var(--blue)">
-        🤖 <strong>AI Assistant:</strong> Select a disease category, fill in the patient data, and click <em>Run AI Risk Assessment</em>. AI will analyze the inputs and return a detailed clinical risk report.
+      <div class="card" style="margin-bottom:20px; border-left:4px solid var(--blue)">
+        <div style="font-size:12px; font-weight:700; text-transform:uppercase; color:var(--text3); margin-bottom:8px">1. Select Patient</div>
+        <select class="input" id="pred-patient-id" style="font-weight:600">
+          <option value="0">--- Select Clinical Record ---</option>
+          ${(DB.load('patients') || []).map(p => `<option value="${p.id}">${p.name} (Age: ${p.age})</option>`).join('')}
+        </select>
       </div>
+
+      <div style="font-size:12px; font-weight:700; text-transform:uppercase; color:var(--text3); margin-bottom:10px">2. Select Disease Category</div>
       <div class="disease-tabs" id="disease-tabs">
         ${this.DISEASES.map(d => `
           <button class="dt ${this.selectedDisease === d.id ? 'active' : ''}"
@@ -125,27 +112,105 @@ const PredictionPage = {
             style="${this.selectedDisease === d.id ? `border-color:${d.color};color:${d.color}` : ''}">
             ${d.label}
           </button>`).join('')}
+        <button class="dt ${this.selectedDisease === 'history' ? 'active' : ''}" 
+                onclick="PredictionPage.switchDisease('history')"
+                style="${this.selectedDisease === 'history' ? 'border-color:var(--cyan);color:var(--cyan)' : ''}">
+          📜 Prediction History
+        </button>
       </div>
-      <div class="pred-grid">
-        <div class="card">
-          <div style="font-size:15px;font-weight:700;margin-bottom:16px" id="pred-form-title"></div>
-          <div id="pred-form-fields"></div>
-          <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:4px;padding:12px" onclick="PredictionPage.run()">
-             Run AI Risk Assessment
-          </button>
-        </div>
-        <div class="card">
-          <div style="font-size:15px;font-weight:700;margin-bottom:14px">Prediction Result</div>
-          <div id="pred-result">
-            <div style="text-align:center;padding:40px 0;color:var(--text3)">
-              <div style="font-size:48px;margin-bottom:12px">🤖</div>
-              <div style="font-size:14px">Fill patient data and run assessment</div>
-              <div style="font-size:12px;margin-top:4px">AI will analyze risk factors and provide clinical guidance</div>
+      <div id="pred-content-area">
+        ${this.selectedDisease === 'history' ? `
+          <div class="card">
+            <div style="font-size:15px;font-weight:700;margin-bottom:14px">Recent Assessments Archive</div>
+            <div id="history-list">
+              <div class="ai-loading"><div class="spinner"></div>Loading archive...</div>
             </div>
           </div>
-        </div>
+        ` : `
+          <div class="pred-grid">
+            <div class="card">
+              <div style="font-size:15px;font-weight:700;margin-bottom:16px" id="pred-form-title"></div>
+              <div style="background:rgba(255,165,0,.08); border:1px solid rgba(255,165,0,.2); border-radius:8px; padding:12px; margin-bottom:20px;">
+                 <div style="font-size:13px; font-weight:700; color:var(--orange); margin-bottom:8px;">✨ Smart Data Scribe</div>
+                 <textarea id="nlp-notes" placeholder="Paste unstructured clinical notes here to auto-fill the form..." style="width:100%; height:60px; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:13px; font-family:inherit; margin-bottom:8px; background:var(--bg); color:var(--text); resize:vertical;"></textarea>
+                 <button type="button" class="btn btn-secondary" onclick="event.preventDefault(); PredictionPage.parseNotes();" style="font-size:12px; padding:6px 12px;" id="nlp-btn">🧠 Parse Data</button>
+                 <div id="nlp-status" style="font-size:11px; margin-top:6px; color:var(--text3); font-style:italic;"></div>
+              </div>
+              <div id="predictionForm">
+                <div id="pred-form-fields"></div>
+                 <a href="javascript:void(0)" class="btn btn-primary" onclick="event.preventDefault(); event.stopPropagation(); PredictionPage.run(); return false;" style="width:100%;justify-content:center;margin-top:4px;padding:12px;text-decoration:none;display:flex;align-items:center;">
+                   Run Risk Assessment
+                 </a>
+              </div>
+            </div>
+            <div class="card">
+              <div style="font-size:15px;font-weight:700;margin-bottom:14px">Prediction Result</div>
+              <div id="pred-result">
+                <div style="text-align:center;padding:40px 0;color:var(--text3)">
+                  <div style="font-size:48px;margin-bottom:12px">🩺</div>
+                  <div style="font-size:14px">Fill patient data and run assessment</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `}
       </div>`;
-    this._renderForm();
+    if (this.selectedDisease === 'history') {
+      this.loadHistory();
+    } else {
+      this._renderForm();
+      
+      // Restore last result if it matches current disease
+      const saved = JSON.parse(localStorage.getItem('hms_last_prediction') || 'null');
+      if (saved && saved.disease === this.selectedDisease) {
+        this.lastResult = saved.result;
+        this._renderResult(saved.result);
+      }
+    }
+  },
+
+  async loadHistory() {
+    try {
+      const resp = await fetch(`${API.BASE}/predictions/history/`);
+      const data = await resp.json();
+      const el = document.getElementById('history-list');
+      if (!data.length) {
+        el.innerHTML = '<div class="empty">No past assessments found.</div>';
+        return;
+      }
+      el.innerHTML = `
+        <table style="width:100%; border-collapse:collapse; margin-top:10px;">
+          <thead>
+            <tr style="text-align:left; border-bottom:1px solid var(--border);">
+              <th style="padding:10px;">Date</th>
+              <th style="padding:10px;">Patient</th>
+              <th style="padding:10px;">Assessment</th>
+              <th style="padding:10px;">Risk Level</th>
+              <th style="padding:10px;">Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${data.map(h => `
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <td style="padding:10px; font-size:12px;">${h.date}</td>
+                <td style="padding:10px;"><strong>${h.patient_name}</strong></td>
+                <td style="padding:10px; text-transform:capitalize;">${h.disease}</td>
+                <td style="padding:10px;"><span class="badge ${h.risk_label === 'High' || h.risk_label === 'Critical' ? 'b-red' : h.risk_label === 'Moderate' ? 'b-orange' : 'b-green'}">${h.risk_label}</span></td>
+                <td style="padding:10px; font-weight:700; color:${h.risk_score > 70 ? 'var(--red)' : h.risk_score > 40 ? 'var(--orange)' : 'var(--green)'}">${h.risk_score}%</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    } catch (err) {
+      document.getElementById('history-list').innerHTML = `
+        <div class="empty">
+          <div class="eicon">⚠️</div>
+          <h3>Archive Connection Error</h3>
+          <p>Failed to load clinical history from backend.</p>
+          <div style="font-size:11px; color:var(--text3); margin-top:8px;">Error: ${err.message}</div>
+        </div>`;
+    }
   },
 
   switchDisease(id) {
@@ -163,9 +228,9 @@ const PredictionPage = {
       [a, b].filter(Boolean).forEach(f => {
         html += `<div><label class="flbl">${f.label}</label>`;
         if (f.type === 'select') {
-          html += `<select class="input" id="pf-${f.id}">${f.opts.map(o => `<option>${o}</option>`).join('')}</select>`;
+          html += `<select class="input" id="pf-${f.id}" required>${f.opts.map(o => `<option value="${o}">${o}</option>`).join('')}</select>`;
         } else {
-          html += `<input class="input" type="${f.type}" id="pf-${f.id}" placeholder="${f.ph || ''}"/>`;
+          html += `<input class="input" type="${f.type}" step="any" id="pf-${f.id}" placeholder="${f.ph || ''}" required/>`;
         }
         html += `</div>`;
       });
@@ -174,141 +239,167 @@ const PredictionPage = {
     document.getElementById('pred-form-fields').innerHTML = html;
   },
 
+  async parseNotes() {
+    const notesEl = document.getElementById('nlp-notes');
+    const btnEl = document.getElementById('nlp-btn');
+    const statusEl = document.getElementById('nlp-status');
+    const notes = notesEl.value.trim();
+
+    if (!notes) {
+      statusEl.textContent = 'Please enter some notes first.';
+      statusEl.style.color = 'var(--red)';
+      return;
+    }
+
+    btnEl.innerHTML = '<div class="spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;vertical-align:middle;margin-right:6px"></div> Parsing...';
+    btnEl.disabled = true;
+    statusEl.textContent = 'Processing clinical notes...';
+    statusEl.style.color = 'var(--text3)';
+
+    try {
+      const resp = await fetch(`${API.BASE}/nlp/parse-notes/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ notes: notes, disease: this.selectedDisease })
+      });
+
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}));
+        throw new Error(err.error || 'API Error');
+      }
+
+      const res = await resp.json();
+
+      if (res.error) {
+        throw new Error(res.error);
+      }
+
+      // Auto-fill fields
+      const data = res.data || {};
+      let filled = 0;
+      Object.keys(data).forEach(key => {
+        const el = document.getElementById(`pf-${key}`);
+        if (el) {
+          el.value = data[key];
+          // Highlight field briefly to show it was auto-filled
+          el.style.transition = 'background 0.3s';
+          el.style.background = 'rgba(255,165,0,.15)';
+          setTimeout(() => el.style.background = '', 1500);
+          filled++;
+        }
+      });
+
+      statusEl.textContent = `✅ Successfully extracted ${filled} data points!`;
+      statusEl.style.color = 'var(--green)';
+
+    } catch (err) {
+      statusEl.textContent = `❌ Processing Error: ${err.message}`;
+      statusEl.style.color = 'var(--red)';
+    } finally {
+      btnEl.innerHTML = '🧠 Parse Data';
+      btnEl.disabled = false;
+    }
+  },
+
   async run() {
-    const cfg    = this.CONFIGS[this.selectedDisease];
-    const inputs = {};
+    const cfg = this.CONFIGS[this.selectedDisease];
+    const features = { disease: this.selectedDisease };
+
+    let emptyFields = [];
     cfg.fields.forEach(f => {
       const el = document.getElementById(`pf-${f.id}`);
-      if (el) inputs[f.label] = el.value || 'Not provided';
+      if (el) {
+        if (el.value === "") {
+          emptyFields.push(f.label);
+          el.style.borderColor = 'var(--red)';
+        } else {
+          el.style.borderColor = '';
+          features[f.id] = parseFloat(el.value) || 0;
+        }
+      }
     });
 
+    if (emptyFields.length > 0) {
+      Utils.toast(`Missing Data: Please fill in ${emptyFields[0]} and other fields.`, 'e');
+      return;
+    }
+
+    const patientId = document.getElementById('pred-patient-id')?.value || 0;
+    
     // Show loading spinner
     document.getElementById('pred-result').innerHTML = `
       <div class="ai-loading">
         <div class="spinner"></div>
-        <div style="font-size:14px;font-weight:600">Analyzing with AI Model...</div>
-        <div style="font-size:12px;color:var(--text3)">Evaluating risk factors using trained ML model</div>
+        <div style="font-size:14px;font-weight:600">Analyzing Clinical Data...</div>
+        <div style="font-size:12px;color:var(--text3)">Evaluating risk factors using trained statistical models</div>
       </div>`;
 
     try {
-      let result;
-      if (this.selectedDisease === 'heart') {
-        // Map form fields to model features
-        const formData = {};
-        cfg.fields.forEach(f => {
-          const el = document.getElementById(`pf-${f.id}`);
-          if (el) {
-            let value = el.value;
-            if (f.type === 'select') {
-              // Map to numbers
-              if (f.id === 'gender') value = value === 'Male' ? 1 : 0;
-              else if (f.id === 'chest_pain') {
-                const opts = ['Typical Angina','Atypical Angina','Non-Anginal Pain','Asymptomatic'];
-                value = opts.indexOf(value);
-              } else if (f.id === 'blood_sugar') value = value === 'Yes' ? 1 : 0;
-              else if (f.id === 'exercise_angina') value = value === 'Yes' ? 1 : 0;
-              else value = 0; // default
-            }
-            formData[f.id] = parseFloat(value) || 0;
-          }
-        });
+      // Add an artificial loading delay for presentation effect
+      await new Promise(resolve => setTimeout(resolve, 1500));
 
-        // Map to model features
-        const features = {
-          disease: 'heart',
-          age: formData.age,
-          gender: formData.gender ? 1 : 0,  // Convert to numeric: 1 = male, 0 = female
-          cp: formData.chest_pain,
-          trestbps: formData.bp,
-          chol: formData.cholesterol,
-          fbs: formData.blood_sugar,
-          restecg: 0, // not in form
-          thalach: formData.max_hr,
-          exang: formData.exercise_angina,
-          oldpeak: formData.st_depression,
-          slope: 1, // not in form
-          ca: 0, // not in form
-          thal: 3, // not in form
-        };
+      const resp = await fetch(`${API.BASE}/patients/${patientId}/disease-risk/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(features)
+      });
 
-        const resp = await fetch(`${API.BASE}/patients/1/disease-risk/`, { // Use dummy patient id
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(features)
-        });
-        if (!resp.ok) {
-          throw new Error(`Backend error: ${resp.status} ${resp.statusText}`);
-        }
-        const data = await resp.json();
-        if (!data.risk_label) {
-          throw new Error('Invalid response format from backend');
-        }
-        result = {
-          risk_level: data.risk_label,
-          risk_score: data.risk_score,
-          summary: `Heart disease risk assessment: ${data.risk_label} (${data.risk_score}%)`,
-          key_factors: ['Age', 'Blood pressure', 'Cholesterol', 'Chest pain type'],
-          recommendations: ['Consult cardiologist if high risk', 'Lifestyle modifications'],
-          tests_suggested: ['ECG', 'Blood tests', 'Stress test'],
-          followup: 'Within 1 week if high risk',
-          specialist: 'Cardiologist'
-        };
-      } else if (this.selectedDisease === 'cancer') {
-        // Map form fields to breast cancer model features
-        const formData = {};
-        cfg.fields.forEach(f => {
-          const el = document.getElementById(`pf-${f.id}`);
-          if (el) formData[f.id] = parseFloat(el.value) || 1;
-        });
-
-        const features = {
-          clump_thickness: formData.clump_thickness,
-          uniformity_cell_size: formData.uniformity_cell_size,
-          uniformity_cell_shape: formData.uniformity_cell_shape,
-          marginal_adhesion: formData.marginal_adhesion,
-          single_epithelial_cell_size: formData.single_epithelial_cell_size,
-          bare_nuclei: formData.bare_nuclei,
-          bland_chromatin: formData.bland_chromatin,
-          normal_nucleoli: formData.normal_nucleoli,
-          mitoses: formData.mitoses,
-        };
-
-        const resp = await fetch(`${API.BASE}/patients/1/disease-risk/`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ disease: 'breast', ...features })
-        });
-        if (!resp.ok) {
-          throw new Error(`Backend error: ${resp.status} ${resp.statusText}`);
-        }
-        const data = await resp.json();
-        if (!data.risk_label) {
-          throw new Error('Invalid response format from backend');
-        }
-        result = {
-          risk_level: data.risk_label,
-          risk_score: data.risk_score,
-          summary: `Breast cancer risk assessment: ${data.risk_label} (${data.risk_score}%)`,
-          key_factors: ['Cell uniformity', 'Clump thickness', 'Nucleoli', 'Mitoses'],
-          recommendations: ['Mammogram if high risk', 'Biopsy if indicated', 'Genetic counseling'],
-          tests_suggested: ['Mammography', 'Biopsy', 'Genetic testing'],
-          followup: 'Within 2 weeks if high risk',
-          specialist: 'Oncologist'
-        };
-      } else {
-        // For other diseases, use placeholder
-        result = {
-          risk_level: 'Moderate',
-          risk_score: 50,
-          summary: 'AI model not trained for this disease yet.',
-          key_factors: ['Data collection in progress'],
-          recommendations: ['Consult specialist'],
-          tests_suggested: ['Standard tests'],
-          followup: 'As advised',
-          specialist: 'Relevant specialist'
-        };
+      if (!resp.ok) {
+        throw new Error(`Backend error: ${resp.status} ${resp.statusText}`);
       }
+
+      const data = await resp.json();
+
+      if (!data.risk_label) {
+        throw new Error('Invalid response format from backend');
+      }
+
+      // Generate recommendation text based on risk label
+      let recommendations = [];
+      let tests = [];
+      let followup = '';
+      let specialist = '';
+
+      if (data.risk_label === 'High' || data.risk_label === 'Critical') {
+        recommendations = ['Immediate medical consultation', 'Strict lifestyle modification', 'Prescription medication review'];
+        tests = ['Advanced imaging', 'Comprehensive blood panel'];
+        followup = 'Within 1-3 days';
+        specialist = 'Respective Specialist';
+      } else if (data.risk_label === 'Moderate') {
+        recommendations = ['Regular monitoring', 'Diet and exercise improvements', 'Preventive care measures'];
+        tests = ['Routine screening'];
+        followup = 'Within 2-4 weeks';
+        specialist = 'General Physician';
+      } else {
+        recommendations = ['Maintain current healthy lifestyle', 'Annual check-ups'];
+        tests = ['None immediately required'];
+        followup = 'Annual review';
+        specialist = 'Primary Care';
+      }
+
+      const result = {
+        risk_level: data.risk_label,
+        risk_score: data.risk_score,
+        summary: `${this.DISEASES.find(d => d.id === this.selectedDisease).label} assessment: ${data.risk_label} Risk (${data.risk_score}%)`,
+        key_factors: ['Based on your provided clinical parameters', 'Analyzed against our trained statistical model'],
+        recommendations: recommendations,
+        tests_suggested: tests,
+        followup: followup,
+        specialist: specialist
+      };
+
+      this.lastResult = result;
+      localStorage.setItem('hms_last_prediction', JSON.stringify({ 
+        disease: this.selectedDisease, 
+        result 
+      }));
       this._renderResult(result);
+      
+      // Notify if high risk
+      if (data.risk_score > 70) {
+        const pName = document.getElementById('pred-patient-id')?.selectedOptions[0]?.text || 'Patient';
+        Notif.add(`🚨 High Risk Detected: ${this.selectedDisease} assessment for ${pName} shows ${data.risk_score}% risk.`, 'error');
+      }
     } catch (err) {
       document.getElementById('pred-result').innerHTML = `
         <div class="empty">
@@ -322,9 +413,9 @@ const PredictionPage = {
 
   _renderResult(r) {
     const scoreColor = r.risk_score < 30 ? 'var(--green)' : r.risk_score < 60 ? 'var(--orange)' : r.risk_score < 80 ? 'var(--red)' : '#ff006e';
-    const lvl        = (r.risk_level || '').toLowerCase();
-    const lvlClass   = lvl === 'low' ? 'rl-low' : lvl === 'moderate' ? 'rl-moderate' : lvl === 'high' ? 'rl-high' : 'rl-critical';
-    const C          = 2 * Math.PI * 54;
+    const lvl = (r.risk_level || '').toLowerCase();
+    const lvlClass = lvl === 'low' ? 'rl-low' : lvl === 'moderate' ? 'rl-moderate' : lvl === 'high' ? 'rl-high' : 'rl-critical';
+    const C = 2 * Math.PI * 54;
     const dashOffset = C - (r.risk_score / 100) * C;
 
     document.getElementById('pred-result').innerHTML = `
@@ -376,6 +467,65 @@ const PredictionPage = {
 
       <button class="btn btn-secondary" style="width:100%;justify-content:center;margin-top:12px" onclick="window.print()">
         🖨️ Print Report
+      </button>
+      
+      <div id="care-plan-box" style="margin-top:14px; display:none"></div>
+      <button class="btn btn-primary" id="btn-gen-care" onclick="PredictionPage.generateCarePlan()" style="width:100%; justify-content:center; margin-top:8px">
+        📜 Generate Personalized Care Plan
       </button>`;
+  },
+
+  generateCarePlan() {
+    const res = this.lastResult;
+    if (!res) return;
+
+    const btn = document.getElementById('btn-gen-care');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<div class="spinner" style="width:16px;height:16px;border-width:2px;display:inline-block;margin-right:8px"></div> Analyzing Data...';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      const score = res.risk_score;
+      const disease = this.selectedDisease.toUpperCase();
+      let plan = '';
+
+      if (score < 30) {
+        plan = `<h3>Care Plan: ${disease} (Low Risk)</h3>
+                <p>Preventive strategy for healthy maintenance.</p>
+                <ul>
+                  <li><strong>Nutrition:</strong> Focus on "Plate Method" (50% veggies, 25% protein, 25% grains).</li>
+                  <li><strong>Hydration:</strong> 2-3 Liters daily.</li>
+                  <li><strong>Activity:</strong> 150 min moderate activity per week.</li>
+                  <li><strong>Sleep:</strong> 7-9 hours regular circadian rhythm.</li>
+                </ul>`;
+      } else if (score < 70) {
+        plan = `<h3>Care Plan: ${disease} (Moderate Risk)</h3>
+                <p>Targeted risk reduction and monitoring protocol.</p>
+                <ul>
+                  <li><strong>Diet:</strong> DASH or Mediterranean diet (Salt < 2g/day).</li>
+                  <li><strong>Medication:</strong> Discuss preventive therapy with your doctor.</li>
+                  <li><strong>Activity:</strong> Structured 30-min daily walks.</li>
+                  <li><strong>Vitals:</strong> Home monitoring of BP/Glucose every 48 hours.</li>
+                </ul>`;
+      } else {
+        plan = `<h3>Care Plan: ${disease} (High Risk)</h3>
+                <p>Immediate stabilization and clinical intervention path.</p>
+                <div class="alert-banner" style="margin:10px 0; background:rgba(240,64,96,0.15); color:#ff5f7e; border-color:rgba(240,64,96,0.3)">🚨 Clinical Attention Required within 24-48 hours.</div>
+                <ul>
+                  <li><strong>Diet:</strong> Strict therapeutic restriction based on specialist consult.</li>
+                  <li><strong>Medication:</strong> Immediate review of pharmaceutical options.</li>
+                  <li><strong>Activity:</strong> Physical rest; avoid strenuous exertion.</li>
+                  <li><strong>Emergency:</strong> Contact hospital if shortness of breath or acute pain occurs.</li>
+                </ul>`;
+      }
+
+      const box = document.getElementById('care-plan-box');
+      box.innerHTML = `<div class="report-box" style="border-color:var(--cyan); background:rgba(13,212,178,0.05); animation: medico-slide-up 0.4s ease">${plan}</div>`;
+      box.style.display = 'block';
+      btn.style.display = 'none';
+      
+      Utils.toast('Personalized Care Plan generated', 's');
+      Notif.add(`📜 Care Plan generated for ${this.selectedDisease}`, 'info');
+    }, 1500);
   }
 };

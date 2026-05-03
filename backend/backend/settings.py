@@ -55,7 +55,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'data' / 'db.sqlite3',
     }
 }
 
@@ -89,3 +89,8 @@ CORS_ALLOW_HEADERS = [
     'accept', 'accept-encoding', 'authorization',
     'content-type', 'origin', 'x-requested-with',
 ]
+
+# Increase upload limit for AI Audio
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760 # 10MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 10485760
+

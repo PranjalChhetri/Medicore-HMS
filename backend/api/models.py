@@ -91,6 +91,18 @@ class Billing(models.Model):
         return f"{self.patient} - ₹{self.amount}"
 
 
+class PredictionResult(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='predictions', null=True, blank=True)
+    disease = models.CharField(max_length=50) # heart, breast, diabetes, etc.
+    risk_score = models.FloatField()
+    risk_label = models.CharField(max_length=20)
+    input_data = models.JSONField() # Store the features used for the prediction
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.disease} Risk: {self.risk_label} ({self.risk_score}%)"
+
+
 class Settings(models.Model):
     """Global system settings (singleton pattern)"""
     # Organization

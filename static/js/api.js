@@ -128,25 +128,43 @@ const _RESOURCE_MAP = {
 
 const _origSave = DB.save.bind(DB);
 
-DB.save = async function(key, data) {
+DB.save = async function(key, data, changedItem) {
   // 1. Always save locally first (instant UI)
   _origSave(key, data);
 
-  // 2. If backend is reachable, sync the latest item
+  // 2. If online status is unknown, check it
+  if (API._online === null) await API.ping();
+  
+  // 3. If backend is unreachable or no mapping exists, stop
   const resource = _RESOURCE_MAP[key];
   if (!resource || API._online === false) return;
 
   try {
-    const latest = data[data.length - 1];
-    if (!latest) return;
-    if (latest.id && latest.id <= data.length) {
-      // Likely an existing record being updated — find by id
-      const existing = data.find(x => x.id === latest.id);
-      if (existing) {
-        await resource.update(latest.id, latest).catch(() => resource.create(latest));
-      }
+    let target = changedItem;
+    
+    // If no specific item passed, try to identify what changed
+    if (!target && data.length > 0) {
+      // For HMS, we usually care about the item that was just edited or added
+      // We'll use the ID as a hint
+      target = data[data.length - 1]; 
+    }
+
+    if (!target) return;
+
+    console.log(`[API] Syncing ${key} item:`, target.id);
+
+    // If it has an ID, try to update it; otherwise create it
+    if (target.id) {
+      await resource.update(target.id, target).catch(async (err) => {
+        // If update fails (e.g. 404), try creating it
+        if (err.message.includes('404')) {
+          await resource.create(target);
+        } else {
+          throw err;
+        }
+      });
     } else {
-      await resource.create(latest);
+      await resource.create(target);
     }
   } catch (e) {
     console.warn(`[API] Sync failed for ${key}:`, e.message);

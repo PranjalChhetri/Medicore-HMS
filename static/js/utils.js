@@ -2,7 +2,7 @@
    utils.js — Shared helper functions used across all pages
    ═══════════════════════════════════════════════════════════ */
 
-const Utils = {
+window.Utils = {
 
   /* ── Avatar helpers ──────────────────────────────────── */
   avatarColor(name) {
@@ -30,7 +30,8 @@ const Utils = {
       'Scheduled':'b-blue', 'Completed':'b-green', 'Cancelled':'b-red',
       'Paid':'b-green', 'Pending':'b-orange', 'Partial':'b-purple',
       'In Stock':'b-green', 'Low Stock':'b-orange', 'Critical':'b-red', 'Out of Stock':'b-gray',
-      'Male':'b-blue', 'Female':'b-pink', 'Other':'b-gray'
+      'Male':'b-blue', 'Female':'b-pink', 'Other':'b-gray',
+      'Waiting':'b-orange', 'In Consultation':'b-blue', 'Admitted':'b-purple', 'Discharged':'b-green'
     };
     return `<span class="badge ${map[s] || 'b-gray'}">${s}</span>`;
   },

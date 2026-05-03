@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>MediCore HMS — Hospital Management System</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="static/css/styles.css?v=2"/>
+  <link rel="stylesheet" href="static/css/styles.css?v=3"/>
 </head>
 <body>
 <div class="app">
@@ -24,6 +24,11 @@
       <button class="nav-btn active" data-page="dashboard">
         <svg class="ni" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         Dashboard
+      </button>
+      <button class="nav-btn" data-page="triage">
+        <svg class="ni" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        ER Triage
+        <span class="badge b-red">LIVE</span>
       </button>
       <button class="nav-btn" data-page="patients">
         <svg class="ni" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -51,8 +56,13 @@
       <div class="sb-sec-title">Intelligence</div>
       <button class="nav-btn" data-page="prediction">
         <svg class="ni" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54Z"/></svg>
-        AI Prediction
-        <span style="margin-left:auto;background:linear-gradient(135deg,var(--cyan),var(--blue));color:var(--bg);font-size:9px;font-weight:800;padding:1px 6px;border-radius:8px">AI</span>
+        Risk Prediction
+        <span class="badge b-blue">PRO</span>
+      </button>
+      <button class="nav-btn" data-page="translator">
+        <svg class="ni" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="m14 18h6"/></svg>
+        Interpreter
+        <span class="badge b-green">SMART</span>
       </button>
       <button class="nav-btn" data-page="analytics">
         <svg class="ni" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
@@ -78,18 +88,31 @@
         <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <input id="global-search" placeholder="Search patients, doctors..."/>
       </div>
-      <button class="icon-btn notif-dot" title="Notifications">🔔</button>
-      <button class="icon-btn" title="Settings" onclick="HMS.toast('Settings coming soon','i')">⚙️</button>
+      <button class="icon-btn notif-dot" id="btn-notif" title="Notifications">🔔</button>
+      <button class="icon-btn" id="btn-settings" title="Settings">⚙️</button>
+
+      <!-- Notifications Dropdown -->
+      <div id="notif-panel" class="notif-panel">
+        <div class="notif-panel-hd">
+          <span>Notifications</span>
+          <button class="text-btn" onclick="Notif.clearAll()">Clear All</button>
+        </div>
+        <div id="notif-panel-list" class="notif-panel-list">
+          <div class="empty">No new alerts</div>
+        </div>
+      </div>
     </header>
 
     <!-- PAGE CONTAINERS -->
     <div class="page-wrap active" id="page-dashboard"></div>
+    <div class="page-wrap" id="page-triage"></div>
     <div class="page-wrap" id="page-patients"></div>
     <div class="page-wrap" id="page-doctors"></div>
     <div class="page-wrap" id="page-appointments"></div>
     <div class="page-wrap" id="page-inventory"></div>
     <div class="page-wrap" id="page-billing"></div>
     <div class="page-wrap" id="page-prediction"></div>
+    <div class="page-wrap" id="page-translator"></div>
     <div class="page-wrap" id="page-analytics"></div>    <div class="page-wrap" id="page-settings">
       <div class="settings-container">
         <div class="settings-tabs" id="settings-tabs"></div>
@@ -113,14 +136,19 @@
 <script src="static/js/router.js"></script>
 <script src="static/js/api.js"></script>
 <script src="static/js/pages/dashboard.js"></script>
+<script src="static/js/pages/triage.js"></script>
 <script src="static/js/pages/patients.js"></script>
 <script src="static/js/pages/doctors.js"></script>
 <script src="static/js/pages/appointments.js"></script>
 <script src="static/js/pages/inventory.js"></script>
 <script src="static/js/pages/billing.js"></script>
 <script src="static/js/pages/prediction.js"></script>
+<script src="static/js/pages/translator.js"></script>
 <script src="static/js/pages/analytics.js"></script>
-<script src="static/js/heart-bg.js?v=2"></script>
+<script src="static/js/safety.js"></script>
+<script src="static/js/pages/settings.js"></script>
+<script src="static/js/notif.js"></script>
+<script src="static/js/medico.js?v=1"></script>
 <script src="static/js/app.js"></script>
 
 </body>

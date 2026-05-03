@@ -6,18 +6,22 @@ const Router = {
   currentPage: 'dashboard',
 
   PAGE_META: {
-    dashboard:   { title:'Dashboard',        sub:'Overview & quick actions' },
-    patients:    { title:'Patients',          sub:'Manage patient records' },
-    doctors:     { title:'Doctors',           sub:'Medical staff directory' },
-    appointments:{ title:'Appointments',      sub:'Schedule & track visits' },
-    inventory:   { title:'Inventory',         sub:'Medical supplies & equipment' },
-    billing:     { title:'Billing',           sub:'Financial records' },
-    prediction:  { title:'AI Disease Prediction', sub:'AI-powered clinical risk assessment' },
-    analytics:   { title:'Analytics',         sub:'Reports & insights' },
+    dashboard: { title: 'Dashboard', sub: 'Overview & quick actions' },
+    triage: { title: 'ER Triage', sub: 'AI-Sorted Emergency Room Queue' },
+    patients: { title: 'Patients', sub: 'Manage patient records' },
+    doctors: { title: 'Doctors', sub: 'Medical staff directory' },
+    appointments: { title: 'Appointments', sub: 'Schedule & track visits' },
+    inventory: { title: 'Inventory', sub: 'Medical supplies & equipment' },
+    billing: { title: 'Billing', sub: 'Financial records' },
+    prediction: { title: 'AI Disease Prediction', sub: 'AI-powered clinical risk assessment' },
+    translator: { title: 'AI Translator', sub: 'Multilingual Medical Interpreter' },
+    analytics: { title: 'Analytics', sub: 'Reports & insights' },
+    settings: { title: 'System Settings', sub: 'Configure clinical parameters & organization' },
   },
 
   navigate(page) {
     this.currentPage = page;
+    localStorage.setItem('hms_last_page', page);
 
     // Hide all pages, show target
     document.querySelectorAll('.page-wrap').forEach(p => p.classList.remove('active'));
@@ -34,15 +38,17 @@ const Router = {
 
     // Render the page
     const renderers = {
-      dashboard:    () => DashboardPage.render(),
-      patients:     () => PatientsPage.render(),
-      doctors:      () => DoctorsPage.render(),
+      dashboard: () => DashboardPage.render(),
+      triage: () => TriagePage.render(),
+      patients: () => PatientsPage.render(),
+      doctors: () => DoctorsPage.render(),
       appointments: () => AppointmentsPage.render(),
-      inventory:    () => InventoryPage.render(),
-      billing:      () => BillingPage.render(),
-      prediction:   () => PredictionPage.render(),
-      analytics:    () => AnalyticsPage.render(),
-      settings:     () => SettingsPage.render(),
+      inventory: () => InventoryPage.render(),
+      billing: () => BillingPage.render(),
+      prediction: () => PredictionPage.render(),
+      translator: () => TranslatorPage.render(),
+      analytics: () => AnalyticsPage.render(),
+      settings: () => SettingsPage.render(),
     };
     renderers[page]?.();
   },
@@ -64,8 +70,9 @@ const Router = {
       }, 60);
     });
 
-    // Initial page
-    this.navigate('dashboard');
+    // Initial page — restore from last session
+    const lastPage = localStorage.getItem('hms_last_page') || 'dashboard';
+    this.navigate(lastPage);
   },
 
   updateBadges() {
@@ -76,6 +83,6 @@ const Router = {
     const lowCount = inv.filter(i => i.status === 'Low Stock' || i.status === 'Critical').length;
     const nb = document.getElementById('nb-inventory');
     nb.style.display = lowCount ? '' : 'none';
-    nb.textContent   = lowCount || '';
+    nb.textContent = lowCount || '';
   }
 };

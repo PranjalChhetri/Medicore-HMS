@@ -9,8 +9,8 @@ const SettingsPage = {
   settings: {},
   unsavedChanges: false,
 
-  render() {
-    this.loadSettings();
+  async render() {
+    await this.loadSettings();
     this.renderTabs();
     this.renderCurrentTab();
     this.bindEvents();

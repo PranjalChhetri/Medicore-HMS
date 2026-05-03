@@ -27,7 +27,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
-from .models import Patient, Doctor, Appointment, Inventory, Billing, Settings
+from .models import Patient, Doctor, Appointment, Inventory, Billing, Settings, PredictionResult
 from .ml_engine import readmission_risk, smart_schedule, inventory_alerts, disease_risk
 
 
@@ -173,11 +173,41 @@ def patient_risk(request, pk):
 @csrf_exempt
 @require_http_methods(['POST'])
 def patient_disease_risk(request, pk):
-    """Run disease risk ML prediction (patient record is optional for stateless predictions)."""
+    """Run disease risk ML prediction and store result."""
     data = _body(request)
-    disease = data.get('disease', 'heart')  # Default to heart
+    disease = data.get('disease', 'heart')
     risk = disease_risk(data, disease)
+    
+    # Persistent storage for security/reference
+    try:
+        p = Patient.objects.get(pk=pk) if pk != 0 else None
+        PredictionResult.objects.create(
+            patient=p,
+            disease=disease,
+            risk_score=risk['risk_score'],
+            risk_label=risk['risk_label'],
+            input_data=data
+        )
+    except Exception as e:
+        print(f"Failed to store prediction: {e}")
+
     return _ok({'patient_id': pk, 'disease': disease, **risk})
+
+
+def predictions_history(request):
+    """Retrieve global prediction history."""
+    qs = PredictionResult.objects.all().order_by('-created_at')[:50]
+    res = []
+    for p in qs:
+        res.append({
+            'id': p.id,
+            'patient_name': p.patient.name if p.patient else 'Guest',
+            'disease': p.disease,
+            'risk_score': p.risk_score,
+            'risk_label': p.risk_label,
+            'date': p.created_at.strftime('%Y-%m-%d %H:%M')
+        })
+    return _ok(res)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -562,3 +592,72 @@ def settings(request):
 
         setting.save()
         return _ok({'success': True, 'message': 'Settings updated'})
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# NLP / LLM ENGINE
+# ─────────────────────────────────────────────────────────────────────────────
+
+from .llm_engine import parse_clinical_notes, check_drug_conflict, generate_care_plan, translate_medical_text, chat_with_medico
+
+@csrf_exempt
+@require_http_methods(['POST'])
+def nlp_parse_notes(request):
+    """Parse unstructured clinical notes into structured JSON using Gemini LLM."""
+    data = _body(request)
+    notes = data.get('notes', '')
+    disease = data.get('disease', '')
+    
+    if not notes:
+        return _err('Notes text is required')
+        
+    result = parse_clinical_notes(notes, disease)
+    if "error" in result and not "data" in result:
+        return _err(result["error"], 500)
+        
+    return _ok(result)
+
+@csrf_exempt
+@require_http_methods(['POST'])
+def nlp_check_drug_conflict(request):
+    """Check drug safety given patient conditions using Gemini LLM."""
+    data = _body(request)
+    conditions = data.get('conditions', '')
+    drug = data.get('drug', '')
+    
+    if not drug:
+        return _err('Drug name is required')
+        
+    result = check_drug_conflict(conditions, drug)
+    return _ok(result)
+
+@csrf_exempt
+@require_http_methods(['POST'])
+def nlp_generate_care_plan(request):
+    data = _body(request)
+    condition = data.get('condition', '')
+    age = data.get('age', 0)
+    gender = data.get('gender', '')
+    result = generate_care_plan(condition, age, gender)
+    return _ok(result)
+
+@csrf_exempt
+@require_http_methods(['POST'])
+def nlp_translate(request):
+    data = _body(request)
+    text = data.get('text', '')
+    audio_base64 = data.get('audio_base64', '')
+    if not text and not audio_base64:
+        return _err('Text or audio is required')
+    result = translate_medical_text(text, audio_base64)
+    return _ok(result)
+@csrf_exempt
+@require_http_methods(['POST'])
+def nlp_chat(request):
+    data = _body(request)
+    message = data.get('message', '')
+    history = data.get('history', [])
+    if not message:
+        return _err('Message is required')
+    response = chat_with_medico(message, history)
+    return _ok({'response': response})

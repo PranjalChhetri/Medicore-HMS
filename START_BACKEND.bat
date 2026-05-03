@@ -12,10 +12,14 @@ echo  ╚═╝     ╚═╝╚══════╝╚═════╝ ╚�
 echo                    Hospital Management System
 echo.
 
+if exist "%~dp0.venv\Scripts\activate.bat" (
+    call "%~dp0.venv\Scripts\activate.bat"
+)
+
 cd /d "%~dp0backend"
 
 echo [1/4] Installing required packages...
-pip install django django-cors-headers --quiet
+pip install -r ..\requirements.txt --quiet
 echo       Done.
 
 echo [2/4] Running database migrations...

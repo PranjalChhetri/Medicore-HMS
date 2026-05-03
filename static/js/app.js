@@ -15,5 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
   DB.init();          // seed localStorage on first load
   Router.init();      // bind nav + render first page
   Router.updateBadges();
-  HeartBG.init();     // initialize beating heart background
+  Notif.init();       // initialize notification center
+  
+  // Link gear icon to settings page
+  document.getElementById('btn-settings')?.addEventListener('click', () => {
+    HMS.toast('Opening System Settings...', 'i');
+    Router.navigate('settings');
+  });
 });

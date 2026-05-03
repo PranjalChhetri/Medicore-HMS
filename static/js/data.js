@@ -4,14 +4,14 @@
 
 const SEED = {
   patients: [
-    { id:1, name:"Amit Sharma",   age:45, gender:"Male",   condition:"Diabetes",      phone:"9876543210", blood:"B+", address:"Delhi" },
-    { id:2, name:"Priya Patel",   age:32, gender:"Female", condition:"Hypertension",  phone:"9765432109", blood:"A+", address:"Mumbai" },
-    { id:3, name:"Rahul Kumar",   age:28, gender:"Male",   condition:"",              phone:"9654321098", blood:"O+", address:"Bangalore" },
-    { id:4, name:"Sneha Gupta",   age:35, gender:"Female", condition:"Asthma",        phone:"9543210987", blood:"AB+", address:"Pune" },
-    { id:5, name:"Vikram Singh",  age:50, gender:"Male",   condition:"Heart Disease", phone:"9432109876", blood:"B-", address:"Jaipur" },
-    { id:6, name:"Neha Verma",    age:27, gender:"Female", condition:"Anemia",        phone:"9321098765", blood:"A-", address:"Lucknow" },
-    { id:7, name:"Arjun Reddy",   age:42, gender:"Male",   condition:"Obesity",       phone:"9210987654", blood:"O-", address:"Hyderabad" },
-    { id:8, name:"Kavya Nair",    age:38, gender:"Female", condition:"Thyroid",       phone:"9109876543", blood:"B+", address:"Chennai" },
+    { id:1, name:"Amit Sharma",   age:45, gender:"Male",   status:"Waiting", condition:"Diabetes",      phone:"9876543210", blood:"B+", address:"Delhi" },
+    { id:2, name:"Priya Patel",   age:32, gender:"Female", status:"Waiting", condition:"Hypertension",  phone:"9765432109", blood:"A+", address:"Mumbai" },
+    { id:3, name:"Rahul Kumar",   age:28, gender:"Male",   status:"Waiting", condition:"",              phone:"9654321098", blood:"O+", address:"Bangalore" },
+    { id:4, name:"Sneha Gupta",   age:35, gender:"Female", status:"Waiting", condition:"Asthma",        phone:"9543210987", blood:"AB+", address:"Pune" },
+    { id:5, name:"Vikram Singh",  age:50, gender:"Male",   status:"Waiting", condition:"Heart Disease", phone:"9432109876", blood:"B-", address:"Jaipur" },
+    { id:6, name:"Neha Verma",    age:27, gender:"Female", status:"Waiting", condition:"Anemia",        phone:"9321098765", blood:"A-", address:"Lucknow" },
+    { id:7, name:"Arjun Reddy",   age:42, gender:"Male",   status:"Waiting", condition:"Obesity",       phone:"9210987654", blood:"O-", address:"Hyderabad" },
+    { id:8, name:"Kavya Nair",    age:38, gender:"Female", status:"Waiting", condition:"Thyroid",       phone:"9109876543", blood:"B+", address:"Chennai" },
   ],
   doctors: [
     { id:1, name:"Dr. Rajesh Mehta",   spec:"General Physician", phone:"9999999999", exp:"12 yrs", dept:"OPD",          status:"Active" },

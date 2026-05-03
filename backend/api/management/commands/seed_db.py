@@ -70,38 +70,38 @@ class Command(BaseCommand):
             Appointment.objects.all().delete()
             Inventory.objects.all().delete()
             Billing.objects.all().delete()
-            self.stdout.write('🗑  Cleared existing data')
+            self.stdout.write('[*] Cleared existing data')
 
         # Patients + auto ML risk
         for p in PATIENTS:
             if not Patient.objects.filter(name=p['name']).exists():
                 risk = readmission_risk(p)
                 Patient.objects.create(**p, readmission_risk=risk['risk_score'], risk_label=risk['risk_label'])
-        self.stdout.write(f'✅ Seeded {len(PATIENTS)} patients with ML risk scores')
+        self.stdout.write(f'[+] Seeded {len(PATIENTS)} patients with ML risk scores')
 
         for d in DOCTORS:
             if not Doctor.objects.filter(name=d['name']).exists():
                 Doctor.objects.create(**d)
-        self.stdout.write(f'✅ Seeded {len(DOCTORS)} doctors')
+        self.stdout.write(f'[+] Seeded {len(DOCTORS)} doctors')
 
         for i in INVENTORY:
             if not Inventory.objects.filter(name=i['name']).exists():
                 Inventory.objects.create(**i)
-        self.stdout.write(f'✅ Seeded {len(INVENTORY)} inventory items')
+        self.stdout.write(f'[+] Seeded {len(INVENTORY)} inventory items')
 
         for b in BILLING:
             Billing.objects.get_or_create(patient=b['patient'], date=b['date'], defaults=b)
-        self.stdout.write(f'✅ Seeded {len(BILLING)} billing records')
+        self.stdout.write(f'[+] Seeded {len(BILLING)} billing records')
 
         for a in APPOINTMENTS:
             Appointment.objects.get_or_create(patient=a['patient'], date=a['date'], defaults=a)
-        self.stdout.write(f'✅ Seeded {len(APPOINTMENTS)} appointments')
+        self.stdout.write(f'[+] Seeded {len(APPOINTMENTS)} appointments')
 
         # Run inventory ML alerts
         items = list(Inventory.objects.all().values('id','name','category','quantity','unit','status','supplier'))
         alerts = inventory_alerts(items)
         alert_ids = {a['item_id'] for a in alerts['alerts']}
         Inventory.objects.filter(pk__in=alert_ids).update(auto_reorder_alert=True)
-        self.stdout.write(f'🤖 ML: {alerts["total_alerts"]} inventory alert(s) flagged')
+        self.stdout.write(f'[ML] {alerts["total_alerts"]} inventory alert(s) flagged')
 
-        self.stdout.write(self.style.SUCCESS('\n🏥 MediCore database seeded successfully!'))
+        self.stdout.write(self.style.SUCCESS('\n[*] MediCore database seeded successfully!'))

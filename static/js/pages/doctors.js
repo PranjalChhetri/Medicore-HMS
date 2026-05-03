@@ -94,9 +94,16 @@ const DoctorsPage = {
       exp:    document.getElementById('dc-exp').value,
       status: document.getElementById('dc-status').value,
     };
-    if (id) { const i = docs.findIndex(d => d.id === id); docs[i] = { ...docs[i], ...data }; }
-    else docs.push({ id: DB.nextId('doctors'), ...data });
-    DB.save('doctors', docs);
+    let item;
+    if (id) { 
+      const i = docs.findIndex(d => d.id === id); 
+      docs[i] = { ...docs[i], ...data }; 
+      item = docs[i];
+    } else {
+      item = { id: DB.nextId('doctors'), ...data };
+      docs.push(item);
+    }
+    DB.save('doctors', docs, item);
     Utils.closeModal();
     Utils.toast(id ? 'Doctor updated' : 'Doctor added');
     this.render();

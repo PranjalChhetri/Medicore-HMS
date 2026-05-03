@@ -134,6 +134,9 @@ const InventoryPage = {
       } else {
         const items = low.map(i => `<strong>${i.name}</strong> (${i.quantity}/${i.reorder_at})`).join(', ');
         alertEl.innerHTML = `<div style="background:rgba(240,64,96,.1);border:1px solid rgba(240,64,96,.3);border-radius:8px;padding:12px;color:var(--red)">⚠️ Reorder: ${items}</div>`;
+        
+        // Add to notification center
+        low.forEach(i => Notif.add(`📦 Stock Alert: ${i.name} is low (${i.quantity} remaining).`, 'warn'));
       }
 
       Utils.toast(`${low.length} item(s) need reordering`);
