@@ -816,3 +816,60 @@ select.input option { background: #0c1628; }
 .form-group.checkbox { display: flex; align-items: center; gap: 10px; }
 .form-group.checkbox input { width: auto; }
 .form-group.checkbox label { margin-bottom: 0; text-transform: none; font-size: 14px; color: var(--text); }
+@charset " UTF-8\; 
+
+/* RADIOLOGY SCANNER */
+.scanner-preview {
+ width: 100%;
+ height: 180px;
+ background: #000;
+ border-radius: 12px;
+ position: relative;
+ overflow: hidden;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ border: 2px solid var(--border);
+}
+.scanner-overlay {
+ position: absolute;
+ top: 0; left: 0; width: 100%; height: 100%;
+ pointer-events: none;
+}
+.scan-line {
+ position: absolute;
+ top: 0; left: 0; width: 100%; height: 2px;
+ background: var(--cyan);
+ box-shadow: 0 0 15px var(--cyan);
+ opacity: 0;
+}
+.scanner-preview.scanning .scan-line {
+ opacity: 1;
+ animation: scan-move 2s linear infinite;
+}
+@keyframes scan-move {
+ 0% { top: 0; }
+ 100% { top: 100%; }
+}
+.crosshair-h {
+ position: absolute;
+ top: 50%; left: 0; width: 100%; height: 1px;
+ background: rgba(13,212,178,0.2);
+}
+.crosshair-v {
+ position: absolute;
+ top: 0; left: 50%; width: 1px; height: 100%;
+ background: rgba(13,212,178,0.2);
+}
+.scanner-text {
+ font-family: \DM Mono\, monospace;
+ font-size: 11px;
+ color: var(--cyan);
+ letter-spacing: 2px;
+ z-index: 2;
+ text-shadow: 0 0 5px var(--cyan);
+}
+.scanning .scanner-text {
+ animation: blink 0.5s step-end infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }

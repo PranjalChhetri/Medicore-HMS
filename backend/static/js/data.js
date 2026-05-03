@@ -43,6 +43,10 @@ const SEED = {
     { id:3, patient:"Rahul Kumar",  amount:800,  paid:800,  status:"Paid",    date:"2025-11-23", desc:"General OPD" },
     { id:4, patient:"Sneha Gupta",  amount:3500, paid:1000, status:"Partial", date:"2025-11-24", desc:"Asthma Treatment" },
     { id:5, patient:"Vikram Singh", amount:8500, paid:0,    status:"Pending", date:"2025-11-25", desc:"Cardiac Procedure" },
+  ],
+  scans: [
+    { id:1, patientId:1, patientName:"Amit Sharma",  type:"MRI", area:"Brain", date:"2025-11-28", status:"Completed", findings:"Normal", risk:"Low" },
+    { id:2, patientId:5, patientName:"Vikram Singh", type:"CT",  area:"Chest", date:"2025-11-29", status:"Pending",   findings:"N/A",    risk:"N/A" }
   ]
 };
 
@@ -54,7 +58,7 @@ const DB = {
   save(k, v) { this.set(k, v); },
   nextId(k)  { const arr = this.load(k); return arr.length ? Math.max(...arr.map(x => x.id)) + 1 : 1; },
   init() {
-    ['patients','doctors','appointments','inventory','billing'].forEach(k => {
+    ['patients','doctors','appointments','inventory','billing', 'scans'].forEach(k => {
       const current = this.get(k);
       // Auto-Heal: If data is missing OR if patients are missing their risk scores, re-seed.
       if (!current || !current.length || (k === 'patients' && current[0] && !current[0].readmission_risk)) {
@@ -64,6 +68,6 @@ const DB = {
     });
   },
   reset() {
-    ['patients','doctors','appointments','inventory','billing'].forEach(k => this.set(k, SEED[k]));
+    ['patients','doctors','appointments','inventory','billing', 'scans'].forEach(k => this.set(k, SEED[k]));
   }
 };
