@@ -5,7 +5,7 @@ import google.generativeai as genai
 # Try to get the API key from environment variable
 # If not set, it will be None and the LLM calls will return fallback/mock data
 # until the user sets it.
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "AIzaSyBsnG4uNNr28_n8FjsYtOxhAZCq6U9a74w")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
 # Configure Gemini
 if GEMINI_API_KEY:
