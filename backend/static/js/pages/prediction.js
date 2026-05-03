@@ -435,7 +435,17 @@ const PredictionPage = {
     const C = 2 * Math.PI * 54;
     const dashOffset = C - (r.risk_score / 100) * C;
 
+    const pSelect = document.getElementById('pred-patient-id');
+    const pName = pSelect ? pSelect.selectedOptions[0].text : 'Unknown Patient';
+    const reportDate = new Date().toLocaleString();
+
     document.getElementById('pred-result').innerHTML = `
+      <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:10px; padding:15px; margin-bottom:20px; text-align:center;">
+        <div style="font-size:11px; text-transform:uppercase; color:var(--text3); letter-spacing:1px; margin-bottom:4px;">Patient Identity</div>
+        <div style="font-size:18px; font-weight:800; color:var(--text);">${pName}</div>
+        <div style="font-size:11px; color:var(--text3); margin-top:4px;">Report Generated: ${reportDate}</div>
+      </div>
+
       <div class="gauge-wrap">
         <svg width="140" height="140" viewBox="0 0 140 140">
           <circle cx="70" cy="70" r="54" fill="none" stroke="var(--border)" stroke-width="10"/>
