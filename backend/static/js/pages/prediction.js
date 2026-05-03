@@ -395,10 +395,27 @@ const PredictionPage = {
       }));
       this._renderResult(result);
       
+      // Update local DB record for the patient
+      if (patientId > 0) {
+        const patients = DB.load('patients');
+        const pIdx = patients.findIndex(p => p.id == patientId);
+        if (pIdx !== -1) {
+          patients[pIdx].readmission_risk = data.risk_score;
+          // Also set the condition if it was empty
+          if (!patients[pIdx].condition) {
+            patients[pIdx].condition = this.selectedDisease.charAt(0).toUpperCase() + this.selectedDisease.slice(1);
+          }
+          DB.save('patients', patients);
+          console.log(`[Prediction] Updated risk for ${patients[pIdx].name}: ${data.risk_score}%`);
+        }
+      }
+
       // Notify if high risk
       if (data.risk_score > 70) {
-        const pName = document.getElementById('pred-patient-id')?.selectedOptions[0]?.text || 'Patient';
+        const pSelect = document.getElementById('pred-patient-id');
+        const pName = pSelect ? pSelect.selectedOptions[0].text.split(' (')[0] : 'Patient';
         Notif.add(`🚨 High Risk Detected: ${this.selectedDisease} assessment for ${pName} shows ${data.risk_score}% risk.`, 'error');
+        Utils.toast(`CRITICAL: ${pName} requires immediate clinical attention!`, 'e');
       }
     } catch (err) {
       document.getElementById('pred-result').innerHTML = `
