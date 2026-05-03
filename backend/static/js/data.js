@@ -55,7 +55,12 @@ const DB = {
   nextId(k)  { const arr = this.load(k); return arr.length ? Math.max(...arr.map(x => x.id)) + 1 : 1; },
   init() {
     ['patients','doctors','appointments','inventory','billing'].forEach(k => {
-      if (!this.get(k) || !this.get(k).length) this.set(k, SEED[k]);
+      const current = this.get(k);
+      // Auto-Heal: If data is missing OR if patients are missing their risk scores, re-seed.
+      if (!current || !current.length || (k === 'patients' && current[0] && !current[0].readmission_risk)) {
+        console.log(`[DB] Auto-Heal: Initializing clinical ${k} data...`);
+        this.set(k, SEED[k]);
+      }
     });
   },
   reset() {
