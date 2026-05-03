@@ -5,7 +5,7 @@
    ═══════════════════════════════════════════════════════════ */
 
 const API = {
-  BASE: 'http://127.0.0.1:8000/api',
+  BASE: 'https://medicore-hms-cdjr.onrender.com/api',
   _online: null,   // null = unknown, true/false after first ping
 
   /* ── Core HTTP helpers ──────────────────────────────── */
