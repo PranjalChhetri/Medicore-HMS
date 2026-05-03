@@ -54,7 +54,7 @@ const SettingsPage = {
   },
 
   renderTabs() {
-    const tabs = ['organization', 'appointments', 'inventory', 'billing', 'predictions', 'ui', 'notifications'];
+    const tabs = ['organization', 'appointments', 'inventory', 'billing', 'predictions', 'ui', 'notifications', 'health'];
     const tabsHtml = tabs.map(t => `
       <button class="settings-tab ${t === this.currentTab ? 'active' : ''}" 
               data-tab="${t}" onclick="SettingsPage.switchTab('${t}')">
@@ -73,7 +73,7 @@ const SettingsPage = {
       billing: '💰',
       predictions: '🤖',
       ui: '🎨',
-      notifications: '🔔',
+      health: '🛠️',
     };
     return icons[tab] || '⚙️';
   },
@@ -86,7 +86,7 @@ const SettingsPage = {
       billing: 'Billing',
       predictions: 'Predictions',
       ui: 'UI & Display',
-      notifications: 'Notifications',
+      health: 'System Health',
     };
     return labels[tab];
   },
@@ -110,6 +110,7 @@ const SettingsPage = {
       predictions: this.renderPredictions.bind(this),
       ui: this.renderUI.bind(this),
       notifications: this.renderNotifications.bind(this),
+      health: this.renderHealth.bind(this),
     };
 
     const content = tabContent[this.currentTab]?.();
@@ -294,6 +295,37 @@ const SettingsPage = {
         <button class="btn-primary" onclick="SettingsPage.saveSettings()">Save Changes</button>
       </div>
     `;
+  },
+
+  renderHealth() {
+    return `
+      <div class="settings-form">
+        <h3>🛠️ System Health & Data</h3>
+        <div class="card mb20" style="background: rgba(240, 64, 96, 0.05); border: 1px solid rgba(240, 64, 96, 0.2);">
+           <h4 style="color:var(--red); margin-top:0;">⚠️ Danger Zone</h4>
+           <p style="font-size:13px; color:var(--text2);">
+             Use this to reset all clinical data (Patients, Risk Scores, Appointments) to the professional factory defaults.
+             <strong>This will clear any local data you have added.</strong>
+           </p>
+           <button class="btn btn-danger" onclick="SettingsPage.factoryReset()" style="background:var(--red); color:white; border:none; padding:10px 16px; border-radius:6px; font-weight:700; cursor:pointer;">
+             🔄 Reset Clinical Database
+           </button>
+        </div>
+        
+        <div class="form-group">
+          <label>Storage Status</label>
+          <div style="font-size:12px; color:var(--text3);">LocalStorage: Healthy</div>
+        </div>
+      </div>
+    `;
+  },
+
+  factoryReset() {
+    if (confirm('🚨 ARE YOU SURE? This will delete all your custom patients and restore the professional demo data with full risk scores.')) {
+      DB.reset();
+      Utils.toast('Database Restored! Reloading clinical dashboard...', 's');
+      setTimeout(() => location.reload(), 800);
+    }
   },
 
   async saveSettings() {
