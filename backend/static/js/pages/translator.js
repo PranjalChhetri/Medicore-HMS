@@ -4,7 +4,7 @@
 
 const TranslatorPage = {
    render() {
-      const el = document.getElementById('page-translator');
+      const el = document.getElementById('page-interpreter');
       el.innerHTML = `
       <div class="page-hd" style="margin-bottom: 20px;">
         <div>
