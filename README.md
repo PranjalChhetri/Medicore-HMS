@@ -1,3 +1,9 @@
+Note on Performance: This project is hosted on a free-tier cloud server (Render). To optimize resources, the server may "sleep" during periods of inactivity.
+
+If the site takes 30-50 seconds to load on your first visit, please be patient! This is just the "Cold Start" process. Once the system is awake, it will be lightning-fast for your entire session. 🏥✨
+
+
+
 # 🏥 Medicore-HMS — AI-Powered Hospital Management System
 
 Medicore-HMS is an AI-driven Hospital Management System designed to combine predictive healthcare intelligence with hospital workflow automation. Unlike traditional HMS platforms, it integrates machine learning models trained on patient records, clinical history, lab reports, and symptom-based datasets to enable early disease prediction, patient risk assessment, and data-driven healthcare decision-making.
